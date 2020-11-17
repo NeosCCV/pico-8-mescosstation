@@ -202,14 +202,10 @@ function game()
 		randompos()
 		randompostrigger=1
 	end
-	print ("game_start")
 	planetstuff()
 	playermovement()
 	playerpositions()
 	tooltip()
-	--print (playerpos) --debug
-	--print (planet1val) --debug
-
 
 
 end
