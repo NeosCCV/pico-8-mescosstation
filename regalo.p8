@@ -41,6 +41,15 @@ function _init()
 	playerpos=5
 	--
 	planettext={"GAS","WATER","EARTH","MOON","STATION","LAVA","BROKEN","GOLDEN","IRON"}
+	--
+	activeturn=1
+	--
+	o2=10
+	money=0
+	gold=0
+	iron=0
+
+
 
 end
 ---------------------------------------------------------------------------------
@@ -199,6 +208,28 @@ function playermovement()
 	end
 end
 --
+function turnpass()
+
+
+
+
+
+end
+--
+function hud()
+--o2
+
+--money
+
+--gold
+
+--iron
+
+--tooltip help
+
+
+
+end
 --
 function intro()
 	cls()
@@ -210,10 +241,11 @@ function intro()
 	startgame=1
 	end
 end
-
+--
 --
 function game()
 	cls()
+	hud()
 	if randompostrigger==0 then
 		randompos()
 		randompostrigger=1
@@ -222,6 +254,7 @@ function game()
 	playermovement()
 	playerpositions()
 	tooltip()
+	turnpass()
 
 
 end
