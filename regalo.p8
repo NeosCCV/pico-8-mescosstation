@@ -55,7 +55,7 @@ function _init()
 	letterz={}
 	letterz.step=0
 	letterzframetrg=1
-	letterx={14,15}
+	letterxframe={14,15}
 	letterx={}
 	letterx.step=0
 	letterxframetrg=1
@@ -64,12 +64,15 @@ function _init()
 	randompostrigger=0
 	--
 	playerpos=5
+	playerx=0
+	playery=0
 	--
 	planettext={"GAS GIANT","WATERY PLANET","EARTH-LIKE PLANET BUT UGLY","THE MOON?","MESCO'S STATION","LAVA PLANET (HOT)","BROKEN PLANET","GOLD ASTEROID","IRON ASTEROID"}
 	--
 	activeturn=1
 	abletomove=1
 	moves=0
+	firsttime=1
 	--
 	o2=5
 	maxo2=5
@@ -175,38 +178,56 @@ function playerpositions()
 	--1
 	if playerpos==1 then
 		spr(0,25,25)
+		playerx=25
+		playery=25
 	end
 	--2
 	if playerpos==2 then
 		spr(0,59,25)
+		playerx=59
+		playery=25
 	end
 	--3
 	if playerpos==3 then
 		spr(0,93,25)
+		playerx=93
+		playery=25
 	end
 	--4
 	if playerpos==4 then
 		spr(0,25,59)
+		playerx=25
+		playery=59
 	end
 	--5
 	if playerpos==5 then
 		spr(0,59,59)
+		playerx=59
+		playery=59
 	end
 	--6
 	if playerpos==6 then
 		spr(0,93,59)
+		playerx=93
+		playery=59
 	end
 	--7
 	if playerpos==7 then
 		spr(0,25,93)
+		playerx=25
+		playery=93
 	end
 	--8
 	if playerpos==8 then
 		spr(0,59,93)
+		playerx=59
+		playery=93
 	end
 	--9
 	if playerpos==9 then
 		spr(0,93,93)
+		playerx=93
+		playery=93
 	end
 end
 function tooltip()
@@ -241,38 +262,58 @@ function tooltip()
 end
 --
 function playermovement()
-	if not (btn(4) or btn(5) or abletomove==0) then
-		if btnp(0)  then --izq
+	if abletomove==1 then
+		if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3))) then
 			if not (playerpos==1 or playerpos==4 or playerpos==7) then
-				playerpos-=1 
-				movedleft=1
+				spr((arrowlframe[arrowlframetrg]),playerx-8,playery)
+				spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
+				if btn(5) then
+					playerpos-=1
+					abletomove=0
+					firsttime=0
+				end
 			end
 		end
-		if btnp(1) then --dcha
+		if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3))) then
 			if not (playerpos==3 or playerpos==6 or playerpos==9) then
-				playerpos+=1 
-				movedright=1
-			end	
-		end
-		if btnp(2) then --up
-			if not (playerpos==1 or playerpos==2 or playerpos==3) then
-				playerpos-=3
-				movedup=1 
+				spr((arrowrframe[arrowrframetrg]),playerx+8,playery)
+				spr((letterxframe[letterxframetrg]),playerx+8,playery-8)
+				if btn(5) then
+					playerpos+=1
+					abletomove=0
+					firsttime=0
+				end
 			end
 		end
-		if btnp(3) then --dwn
+		if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3))) then
+			if not (playerpos==1 or playerpos==2 or playerpos==3) then
+				spr((arrowuframe[arrowuframetrg]),playerx,playery-8)
+				spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
+				if btn(5) then
+					playerpos-=3
+					abletomove=0
+					firsttime=0
+				end
+			end
+		end
+		if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2))) then
 			if not (playerpos==7 or playerpos==8 or playerpos==9) then
-				playerpos+=3
-				moveddown=1
-
+				spr((arrowdframe[arrowdframetrg]),playerx,playery+18)
+				spr((letterxframe[letterxframetrg]),playerx-8,playery+18)
+				if btn(5) then
+					playerpos+=3
+					abletomove=0
+					firsttime=0
+				end
 			end
 		end
 	end
 end
 --
 function turnpass()
---if 
-
+if firsttime==0 then
+	spr((letterxframe[letterzframetrg]),playerx+8,playery+8)
+end
 
 
 
@@ -322,6 +363,7 @@ end
 --
 function upgradestation()
 	if playerpos==5 then
+		spr((letterzframe[letterzframetrg]),playerx-8,playery+8)
 		if btn(4) then
 			cls()
 		end
@@ -342,7 +384,7 @@ function game()
 	tooltip()
 	turnpass()
 	upgradestation()
-spr((arrowlframe[arrowlframetrg]),0,0)
+
 end
 
 function gameend()
