@@ -37,6 +37,10 @@ function _init()
 	--
 	mappos={25,33,59,33,93,33,25,67,59,67,93,67,25,101,59,101,93,101}
 	randompostrigger=0
+	--
+	playerpos=5
+	--
+	planettext={"GAS","WATER","EARTH","MOON","STATION","LAVA","BROKEN","GOLDEN","IRON"}
 
 end
 ---------------------------------------------------------------------------------
@@ -59,6 +63,18 @@ function animations()
 	platform.step+=1
  	if(platform.step%3==0) platformframetrg+=1
  	if(platformframetrg>4) platformframetrg=1
+end
+--
+function planetstuff()
+	spr((planet1frame[planet1frametrg]),mappos[(planet1val*2)-1],mappos[(planet1val*2)])	--GAS PLANET
+	spr((planet2frame[planet2frametrg]),mappos[(planet2val*2)-1],mappos[(planet2val*2)])	--WATERY ONE
+	spr((planet3frame[planet3frametrg]),mappos[(planet3val*2)-1],mappos[(planet3val*2)])	--EARTH LIKE ONE
+	spr((planet4frame[planet4frametrg]),mappos[(planet4val*2)-1],mappos[(planet4val*2)])	--MOON LIKE ONE
+	spr((platformframe[platformframetrg]),mappos[(planet5val*2)-1],mappos[(planet5val*2)])	--STATION
+	spr((planet5frame[planet5frametrg]),mappos[(planet6val*2)-1],mappos[(planet6val*2)])	--LAVA PLANET
+	spr((5),mappos[(planet7val*2)-1],mappos[(planet7val*2)])								--BROKEN PLANET
+	spr((6),mappos[(planet8val*2)-1],mappos[(planet8val*2)])								--GOLDEN ASTEROID
+	spr((7),mappos[(planet9val*2)-1],mappos[(planet9val*2)])								--IRON ASTEROID
 end
 --
 function randompos()
@@ -91,6 +107,99 @@ function randompos()
 
 end
 --
+function playerpositions()
+	--1
+	if playerpos==1 then
+		spr(0,25,25)
+	end
+	--2
+	if playerpos==2 then
+		spr(0,59,25)
+	end
+	--3
+	if playerpos==3 then
+		spr(0,93,25)
+	end
+	--4
+	if playerpos==4 then
+		spr(0,25,59)
+	end
+	--5
+	if playerpos==5 then
+		spr(0,59,59)
+	end
+	--6
+	if playerpos==6 then
+		spr(0,93,59)
+	end
+	--7
+	if playerpos==7 then
+		spr(0,25,93)
+	end
+	--8
+	if playerpos==8 then
+		spr(0,59,93)
+	end
+	--9
+	if playerpos==9 then
+		spr(0,93,93)
+	end
+end
+function tooltip()
+	--tooltip text bout where u at
+	if playerpos==planet1val then
+		print (planettext[1])
+	end
+	if playerpos==planet2val then
+		print (planettext[2])
+	end
+	if playerpos==planet3val then
+		print (planettext[3])
+	end
+	if playerpos==planet4val then
+		print (planettext[4])
+	end
+	if playerpos==planet5val then
+		print (planettext[5])
+	end
+	if playerpos==planet6val then
+		print (planettext[6])
+	end
+	if playerpos==planet7val then
+		print (planettext[7])
+	end
+	if playerpos==planet8val then
+		print (planettext[8])
+	end
+	if playerpos==planet9val then
+		print (planettext[9])
+	end
+end
+--
+function playermovement()
+	if btnp(0) then --izq
+		if not (playerpos==1 or playerpos==4 or playerpos==7) then
+			playerpos-=1 
+		end
+	end
+	if btnp(1) then --dcha
+		if not (playerpos==3 or playerpos==6 or playerpos==9) then
+			playerpos+=1 
+		end
+	end
+	if btnp(2) then --up
+		if not (playerpos==1 or playerpos==2 or playerpos==3) then
+			playerpos-=3 
+		end
+	end
+	if btnp(3) then --dwn
+		if not (playerpos==7 or playerpos==8 or playerpos==9) then
+			playerpos+=3 
+		end
+	end
+end
+--
+--
 function intro()
 	cls()
 	spr(0,59,59)
@@ -102,35 +211,17 @@ function intro()
 	end
 end
 
+--
 function game()
 	cls()
 	if randompostrigger==0 then
 		randompos()
 		randompostrigger=1
 	end
-	spr(0,59,59)
-	print ("game_start")
-	spr((planet1frame[planet1frametrg]),mappos[(planet1val*2)-1],mappos[(planet1val*2)])	--GAS PLANET
-	spr((planet2frame[planet2frametrg]),mappos[(planet2val*2)-1],mappos[(planet2val*2)])	--WATERY ONE
-	spr((planet3frame[planet3frametrg]),mappos[(planet3val*2)-1],mappos[(planet3val*2)])	--EARTH LIKE ONE
-	spr((planet4frame[planet4frametrg]),mappos[(planet4val*2)-1],mappos[(planet4val*2)])	--MOON LIKE ONE
-	spr((platformframe[platformframetrg]),mappos[(planet5val*2)-1],mappos[(planet5val*2)])	--STATION
-	spr((planet5frame[planet5frametrg]),mappos[(planet6val*2)-1],mappos[(planet6val*2)])	--LAVA PLANET
-	spr((5),mappos[(planet7val*2)-1],mappos[(planet7val*2)])								--BROKEN PLANET
-	spr((6),mappos[(planet8val*2)-1],mappos[(planet8val*2)])								--GOLDEN ASTEROID
-	spr((7),mappos[(planet9val*2)-1],mappos[(planet9val*2)])								--IRON ASTEROID
-	print (planet1val,0,6)
-	print (planet2val,0,12)
-	print (planet3val,0,18)
-	print (planet4val,0,24)
-	print (planet5val,0,30)
-	print (planet6val,0,36)
-	print (planet7val,0,42)
-	print (planet8val,0,48)
-	print (planet9val,0,54)
-
-
-
+	planetstuff()
+	playermovement()
+	playerpositions()
+	tooltip()
 
 
 end
@@ -156,14 +247,14 @@ end
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 __gfx__
-00555500111111111111111111111111111111110000001000011110001100000000000000000000000000000000000000000000000000000000000000000000
-0055550001cba810018cba1001a8cb1001ba8c100011018100015511015511000000000000000000000000000000000000000000000000000000000000000000
-00555500011111100111111001111110011111100189101001115551015dd5100000000000000000000000000000000000000000000000000000000000000000
-00555500001aa100001aa100001aa100001aa1001881100001a55551015dd5100000000000000000000000000000000000000000000000000000000000000000
-00ffff00000a990000aaa000000a9000000aa0001411010001555aa115dd55100000000000000000000000000000000000000000000000000000000000000000
-00ffff0000099000000a990000999000090a9000010014100015aa101dd551000000000000000000000000000000000000000000000000000000000000000000
-00ffff000a090000000990000009909000099090000148810155a1001d5510000000000000000000000000000000000000000000000000000000000000000000
-00ffff00000000000009000000090000000900000000111001111000011100000000000000000000000000000000000000000000000000000000000000000000
+00555500111111111111111111111111111111110000001000011110001100000cc0000000000000000000000000000000000000000000000000000000000000
+0055550001cba810018cba1001a8cb1001ba8c10001101810001551101551100c00c0000000aa00000066600000bbb0000000000000000000000000000000000
+00555500011111100111111001111110011111100189101001115551015dd510c00c000000a000000000600000b0b00000000000000000000000000000000000
+00555500001aa100001aa100001aa100001aa1001881100001a55551015dd510c00c0cc000a0aa0000006000000bb00000000000000000000000000000000000
+00ffff00000a990000aaa000000a9000000aa0001411010001555aa115dd5510c00cc00c00a00a0000006000000b0b0000000000000000000000000000000000
+00ffff0000099000000a990000999000090a9000010014100015aa101dd551000cc000c0000aa0000006660000bbb00000000000000000000000000000000000
+00ffff000a090000000990000009909000099090000148810155a1001d55100000000c0000000000000000000000000000000000000000000000000000000000
+00ffff00000000000009000000090000000900000000111001111000011100000000cccc00000000000000000000000000000000000000000000000000000000
 00111100001111000011110000111100001111000011110000111100001111000011110000111100001111000011110000111100001111000011110000111100
 012222100122221001222210012222100122221001222210012222100122221001dddd1001dddd1001dddd1001dddd1001d6dd1001dddd1001dddd1001dddd10
 1eeeee2112eeeee1122eeee11222eee11e222ee11ee222e11eee22211eeee2211d666cc11dd6dcc11ddddcc11ddddcc11d6666c11ddd66c11ddd6cc11d66dcc1
