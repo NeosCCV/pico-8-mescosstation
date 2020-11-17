@@ -53,7 +53,7 @@ function animations()
 	planet4.step+=1
  	if(planet4.step%10==0) planet4frametrg+=1
  	if(planet4frametrg>8) planet4frametrg=1
-	planet5.step+=1 --------------------------------------PLANET5 ES AHORA PLANET6 MACHO SOY SUBNORMAL
+	planet5.step+=1 --------------------------------------PLANET5 ES AHORA PLANET6 MACHO SOY SUBNORMAL :))))))
  	if(planet5.step%10==0) planet5frametrg+=1
  	if(planet5frametrg>8) planet5frametrg=1
 	platform.step+=1
@@ -110,15 +110,15 @@ function game()
 	end
 	spr(0,59,59)
 	print ("game_start")
-	spr((planet1frame[planet1frametrg]),mappos[(planet1val*2)-1],mappos[(planet1val*2)])
-	spr((planet2frame[planet2frametrg]),mappos[(planet2val*2)-1],mappos[(planet2val*2)])
-	spr((planet3frame[planet3frametrg]),mappos[(planet3val*2)-1],mappos[(planet3val*2)])
-	spr((planet4frame[planet4frametrg]),mappos[(planet4val*2)-1],mappos[(planet4val*2)])
-	spr((platformframe[platformframetrg]),mappos[(planet5val*2)-1],mappos[(planet5val*2)])
-	spr((planet5frame[planet5frametrg]),mappos[(planet6val*2)-1],mappos[(planet6val*2)])
-	spr((5),mappos[(planet7val*2)-1],mappos[(planet7val*2)])
-	spr((6),mappos[(planet8val*2)-1],mappos[(planet8val*2)])
-	spr((7),mappos[(planet9val*2)-1],mappos[(planet9val*2)])
+	spr((planet1frame[planet1frametrg]),mappos[(planet1val*2)-1],mappos[(planet1val*2)])	--GAS PLANET
+	spr((planet2frame[planet2frametrg]),mappos[(planet2val*2)-1],mappos[(planet2val*2)])	--WATERY ONE
+	spr((planet3frame[planet3frametrg]),mappos[(planet3val*2)-1],mappos[(planet3val*2)])	--EARTH LIKE ONE
+	spr((planet4frame[planet4frametrg]),mappos[(planet4val*2)-1],mappos[(planet4val*2)])	--MOON LIKE ONE
+	spr((platformframe[platformframetrg]),mappos[(planet5val*2)-1],mappos[(planet5val*2)])	--STATION
+	spr((planet5frame[planet5frametrg]),mappos[(planet6val*2)-1],mappos[(planet6val*2)])	--LAVA PLANET
+	spr((5),mappos[(planet7val*2)-1],mappos[(planet7val*2)])								--BROKEN PLANET
+	spr((6),mappos[(planet8val*2)-1],mappos[(planet8val*2)])								--GOLDEN ASTEROID
+	spr((7),mappos[(planet9val*2)-1],mappos[(planet9val*2)])								--IRON ASTEROID
 	print (planet1val,0,6)
 	print (planet2val,0,12)
 	print (planet3val,0,18)
