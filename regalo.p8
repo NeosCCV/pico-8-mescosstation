@@ -10,7 +10,7 @@ function _init()
 	startgame=0
 	gameend=0
 	--
-	
+
 	planet1frame={16,17,18,19,20,21,22,23}
 	planet1={}
 	planet1.step=0
@@ -35,16 +35,7 @@ function _init()
 	platform.step=0
 	platformframetrg=0
 	--
-	mappos1={25,52}
-	--mappos2=
-	--mappos3=
-	--mappos4=
-	mappos5={59,67}
-	--mappos6=
-	--mappos7=
-	--mappos8=
-	--mappos9=
-	--
+	mappos={25,33,59,33,93,33,25,67,59,67,93,67,25,101,59,101,93,101}
 	randompostrigger=0
 
 end
@@ -62,7 +53,7 @@ function animations()
 	planet4.step+=1
  	if(planet4.step%10==0) planet4frametrg+=1
  	if(planet4frametrg>8) planet4frametrg=1
-	planet5.step+=1
+	planet5.step+=1 --------------------------------------PLANET5 ES AHORA PLANET6 MACHO SOY SUBNORMAL
  	if(planet5.step%10==0) planet5frametrg+=1
  	if(planet5frametrg>8) planet5frametrg=1
 	platform.step+=1
@@ -79,7 +70,7 @@ function randompos()
 	until not (planet1val==planet2val or planet2val==5)
 	repeat
 		planet3val=(flr(rnd(9)))+1
-	until not (planet1val==planet3val or planet2val==planet3val or planet4val==5)
+	until not (planet1val==planet3val or planet2val==planet3val or planet3val==5)
 	repeat
 		planet4val=(flr(rnd(9)))+1
 	until not (planet1val==planet4val or planet2val==planet4val or planet3val==planet4val or planet4val==5)
@@ -97,7 +88,6 @@ function randompos()
 		planet9val=(flr(rnd(9)))+1
 	until not (planet1val==planet9val or planet2val==planet9val or planet3val==planet9val or planet4val==planet9val or planet6val==planet9val or planet7val==planet9val or planet8val==planet9val or planet9val==5)
 	--
-	
 
 end
 --
@@ -118,9 +108,17 @@ function game()
 		randompos()
 		randompostrigger=1
 	end
+	spr(0,59,59)
 	print ("game_start")
-	spr((planet1frame[planet1frametrg]),mappos1[1],mappos1[2])
-	spr((platformframe[platformframetrg]),mappos5[1],mappos5[2])
+	spr((planet1frame[planet1frametrg]),mappos[(planet1val*2)-1],mappos[(planet1val*2)])
+	spr((planet2frame[planet2frametrg]),mappos[(planet2val*2)-1],mappos[(planet2val*2)])
+	spr((planet3frame[planet3frametrg]),mappos[(planet3val*2)-1],mappos[(planet3val*2)])
+	spr((planet4frame[planet4frametrg]),mappos[(planet4val*2)-1],mappos[(planet4val*2)])
+	spr((platformframe[platformframetrg]),mappos[(planet5val*2)-1],mappos[(planet5val*2)])
+	spr((planet5frame[planet5frametrg]),mappos[(planet6val*2)-1],mappos[(planet6val*2)])
+	spr((5),mappos[(planet7val*2)-1],mappos[(planet7val*2)])
+	spr((6),mappos[(planet8val*2)-1],mappos[(planet8val*2)])
+	spr((7),mappos[(planet9val*2)-1],mappos[(planet9val*2)])
 	print (planet1val,0,6)
 	print (planet2val,0,12)
 	print (planet3val,0,18)
