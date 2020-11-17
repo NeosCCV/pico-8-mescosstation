@@ -14,37 +14,39 @@ function _init()
 	planet1frame={16,17,18,19,20,21,22,23}
 	planet1={}
 	planet1.step=0
-	planet1frametrg=0
+	planet1frametrg=1
 	planet2frame={24,25,26,27,28,29,30,31}
 	planet2={}
 	planet2.step=0
-	planet2frametrg=0
+	planet2frametrg=1
 	planet3frame={32,33,34,35,36,37,38,39}
 	planet3={}
-	planet3.step=0	planet3frametrg=0
+	planet3.step=0	
+	planet3frametrg=1
 	planet4frame={40,41,42,43,44,45,46,47}
 	planet4={}
 	planet4.step=0	
-	planet4frametrg=0
+	planet4frametrg=1
 	planet5frame={48,49,50,51,52,53,54,55}
 	planet5={}
 	planet5.step=0
-	planet5frametrg=0
+	planet5frametrg=1
 	platformframe={1,2,3,4}
 	platform={}
 	platform.step=0
-	platformframetrg=0
+	platformframetrg=1
 	--
 	mappos={25,33,59,33,93,33,25,67,59,67,93,67,25,101,59,101,93,101}
 	randompostrigger=0
 	--
 	playerpos=5
 	--
-	planettext={"GAS","WATER","EARTH","MOON","STATION","LAVA","BROKEN","GOLDEN","IRON"}
+	planettext={"GAS GIANT","WATERY PLANET","EARTH-LIKE PLANET BUT UGLY","THE MOON?","MESCO'S STATION","LAVA PLANET (HOT)","BROKEN PLANET","GOLD ASTEROID","IRON ASTEROID"}
 	--
 	activeturn=1
 	--
 	o2=10
+	maxo2=10
 	money=0
 	gold=0
 	iron=0
@@ -55,19 +57,19 @@ end
 ---------------------------------------------------------------------------------
 function animations()
 	planet1.step+=1
- 	if(planet1.step%10==0) planet1frametrg+=1
+ 	if(planet1.step%45==0) planet1frametrg+=1
  	if(planet1frametrg>8) planet1frametrg=1
 	planet2.step+=1
- 	if(planet2.step%10==0) planet2frametrg+=1
+ 	if(planet2.step%25==0) planet2frametrg+=1
  	if(planet2frametrg>8) planet2frametrg=1
 	planet3.step+=1
  	if(planet3.step%10==0) planet3frametrg+=1
  	if(planet3frametrg>8) planet3frametrg=1
 	planet4.step+=1
- 	if(planet4.step%10==0) planet4frametrg+=1
+ 	if(planet4.step%2==0) planet4frametrg+=1
  	if(planet4frametrg>8) planet4frametrg=1
 	planet5.step+=1 --------------------------------------PLANET5 ES AHORA PLANET6 MACHO SOY SUBNORMAL :))))))
- 	if(planet5.step%10==0) planet5frametrg+=1
+ 	if(planet5.step%32==0) planet5frametrg+=1
  	if(planet5frametrg>8) planet5frametrg=1
 	platform.step+=1
  	if(platform.step%3==0) platformframetrg+=1
@@ -119,91 +121,93 @@ end
 function playerpositions()
 	--1
 	if playerpos==1 then
-		spr(0,25,25)
+		spr(15,25,25)
 	end
 	--2
 	if playerpos==2 then
-		spr(0,59,25)
+		spr(15,59,25)
 	end
 	--3
 	if playerpos==3 then
-		spr(0,93,25)
+		spr(15,93,25)
 	end
 	--4
 	if playerpos==4 then
-		spr(0,25,59)
+		spr(15,25,59)
 	end
 	--5
 	if playerpos==5 then
-		spr(0,59,59)
+		spr(15,59,59)
 	end
 	--6
 	if playerpos==6 then
-		spr(0,93,59)
+		spr(15,93,59)
 	end
 	--7
 	if playerpos==7 then
-		spr(0,25,93)
+		spr(15,25,93)
 	end
 	--8
 	if playerpos==8 then
-		spr(0,59,93)
+		spr(15,59,93)
 	end
 	--9
 	if playerpos==9 then
-		spr(0,93,93)
+		spr(15,93,93)
 	end
 end
 function tooltip()
 	--tooltip text bout where u at
 	if playerpos==planet1val then
-		print (planettext[1])
+		print (planettext[1],0,0,7)
 	end
 	if playerpos==planet2val then
-		print (planettext[2])
+		print (planettext[2],0,0,7)
 	end
 	if playerpos==planet3val then
-		print (planettext[3])
+		print (planettext[3],0,0,7)
 	end
 	if playerpos==planet4val then
-		print (planettext[4])
+		print (planettext[4],0,0,7)
 	end
 	if playerpos==planet5val then
-		print (planettext[5])
+		print (planettext[5],0,0,7)
 	end
 	if playerpos==planet6val then
-		print (planettext[6])
+		print (planettext[6],0,0,7)
 	end
 	if playerpos==planet7val then
-		print (planettext[7])
+		print (planettext[7],0,0,7)
 	end
 	if playerpos==planet8val then
-		print (planettext[8])
+		print (planettext[8],0,0,7)
 	end
 	if playerpos==planet9val then
-		print (planettext[9])
+		print (planettext[9],0,0,7)
 	end
 end
 --
 function playermovement()
-	if btnp(0) then --izq
-		if not (playerpos==1 or playerpos==4 or playerpos==7) then
-			playerpos-=1 
+	if not (btn(4) or btn(5)) then
+		if btnp(0) then --izq
+			if not (playerpos==1 or playerpos==4 or playerpos==7) then
+				playerpos-=1 
+			end
 		end
-	end
-	if btnp(1) then --dcha
-		if not (playerpos==3 or playerpos==6 or playerpos==9) then
-			playerpos+=1 
+		if btnp(1) then --dcha
+			if not (playerpos==3 or playerpos==6 or playerpos==9) then
+				playerpos+=1 
+			end
 		end
-	end
-	if btnp(2) then --up
-		if not (playerpos==1 or playerpos==2 or playerpos==3) then
-			playerpos-=3 
+		if btnp(2) then --up
+			if not (playerpos==1 or playerpos==2 or playerpos==3) then
+				playerpos-=3 
+			end
 		end
-	end
-	if btnp(3) then --dwn
-		if not (playerpos==7 or playerpos==8 or playerpos==9) then
-			playerpos+=3 
+		if btnp(3) then --dwn
+			if not (playerpos==7 or playerpos==8 or playerpos==9) then
+				playerpos+=3 
+			end
 		end
 	end
 end
@@ -218,12 +222,21 @@ end
 --
 function hud()
 --o2
+spr(8,1,119)
+print (o2,11,120,12)
+print ("/",19,120,12)
+print (maxo2,23,120,12)
+--gold
+spr(9,31,119)
+print (gold,39,120,10)
+--iron
+spr(10,51,119)
 
 --money
+spr(11,71,119)
 
---gold
 
---iron
+
 
 --tooltip help
 
@@ -233,7 +246,7 @@ end
 --
 function intro()
 	cls()
-	spr(0,59,59)
+	spr(15,59,59)
 	print ("mesco's station",33,70)
 	print ("PRESS z TO BEGIN",32,82)
 	if (btn(4)) then 
@@ -243,6 +256,15 @@ function intro()
 end
 --
 --
+function upgradestation()
+	if playerpos==5 then
+		if btn(4) then
+			cls()
+		end
+	end
+
+end
+
 function game()
 	cls()
 	hud()
@@ -255,7 +277,7 @@ function game()
 	playerpositions()
 	tooltip()
 	turnpass()
-
+	upgradestation()
 
 end
 
@@ -280,14 +302,14 @@ end
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 __gfx__
-00555500111111111111111111111111111111110000001000011110001100000cc0000000000000000000000000000000000000000000000000000000000000
-0055550001cba810018cba1001a8cb1001ba8c10001101810001551101551100c00c0000000aa00000066600000bbb0000000000000000000000000000000000
-00555500011111100111111001111110011111100189101001115551015dd510c00c000000a000000000600000b0b00000000000000000000000000000000000
-00555500001aa100001aa100001aa100001aa1001881100001a55551015dd510c00c0cc000a0aa0000006000000bb00000000000000000000000000000000000
-00ffff00000a990000aaa000000a9000000aa0001411010001555aa115dd5510c00cc00c00a00a0000006000000b0b0000000000000000000000000000000000
-00ffff0000099000000a990000999000090a9000010014100015aa101dd551000cc000c0000aa0000006660000bbb00000000000000000000000000000000000
-00ffff000a090000000990000009909000099090000148810155a1001d55100000000c0000000000000000000000000000000000000000000000000000000000
-00ffff00000000000009000000090000000900000000111001111000011100000000cccc00000000000000000000000000000000000000000000000000000000
+00077000111111111111111111111111111111110000001000011110001100000cc0000000000000000000000000000000000000000000000000000000555500
+0707707001cba810018cba1001a8cb1001ba8c10001101810001551101551100c00c0000000aa00000066600000bbb0000000000000000000000000000555500
+00000000011111100111111001111110011111100189101001115551015dd510c00c000000a000000000600000b0b00000000000000000000000000000555500
+77077077001aa100001aa100001aa100001aa1001881100001a55551015dd510c00c0cc000a0aa0000006000000bb00000000000000000000000000000555500
+77077077000a990000aaa000000a9000000aa0001411010001555aa115dd5510c00cc00c00a00a0000006000000b0b0000000000000000000000000000ffff00
+0000000000099000000a990000999000090a9000010014100015aa101dd551000cc000c0000aa0000006660000bbb00000000000000000000000000000ffff00
+070770700a090000000990000009909000099090000148810155a1001d55100000000c0000000000000000000000000000000000000000000000000000ffff00
+00077000000000000009000000090000000900000000111001111000011100000000cccc00000000000000000000000000000000000000000000000000ffff00
 00111100001111000011110000111100001111000011110000111100001111000011110000111100001111000011110000111100001111000011110000111100
 012222100122221001222210012222100122221001222210012222100122221001dddd1001dddd1001dddd1001dddd1001d6dd1001dddd1001dddd1001dddd10
 1eeeee2112eeeee1122eeee11222eee11e222ee11ee222e11eee22211eeee2211d666cc11dd6dcc11ddddcc11ddddcc11d6666c11ddd66c11ddd6cc11d66dcc1
