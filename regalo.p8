@@ -9,6 +9,7 @@ function _init()
 	ismescocute=1
 	introdone=0
 	startgame=0
+	
 	--
 	planet1frame={16,17,18,19,20,21,22,23}
 	planet1={}
