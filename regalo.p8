@@ -2,13 +2,13 @@ pico-8 cartridge // http://www.pico-8.com
 version 29
 __lua__
 --
+poke(0x5f00+92,255)
 --
 ---------------------------------------------------------------------------------
 function _init()
 	ismescocute=1
 	introdone=0
 	startgame=0
-	gameend=0
 	--
 	planet1frame={16,17,18,19,20,21,22,23}
 	planet1={}
@@ -63,7 +63,7 @@ function _init()
 	mappos={25,33,59,33,93,33,25,67,59,67,93,67,25,101,59,101,93,101}
 	randompostrigger=0
 	--
-	playerpos=5
+	playerpos=0
 	playerx=0
 	playery=0
 	onplanet=0
@@ -77,6 +77,7 @@ function _init()
 	moves=0
 	firsttime=1
 	zstuff=0
+	coolasstimer=0
 	--
 	o2=5
 	maxo2=5
@@ -85,7 +86,13 @@ function _init()
 	iron=0
 	maxiron=5
 	money=0
-
+	--
+	turnstaken=0
+	--
+	onupgradescreen=0
+	introtriggerupgrade=0
+	--
+	deadof=0
 
 
 
@@ -107,11 +114,11 @@ function animations()
 	planet5.step+=1 --------------------------------------PLANET5 ES AHORA PLANET6 MACHO SOY SUBNORMAL :))))))
  	if(planet5.step%32==0) planet5frametrg+=1
  	if(planet5frametrg>8) planet5frametrg=1
---
+	--
 	platform.step+=1
  	if(platform.step%3==0) platformframetrg+=1
  	if(platformframetrg>4) platformframetrg=1
---
+	--
 	arrowl.step+=1
  	if(arrowl.step%8==0) arrowlframetrg+=1
  	if(arrowlframetrg>2) arrowlframetrg=1
@@ -124,7 +131,7 @@ function animations()
 	arrowd.step+=1
  	if(arrowd.step%8==0) arrowdframetrg+=1
  	if(arrowdframetrg>2) arrowdframetrg=1
---
+	--
 	letterz.step+=1
  	if(letterz.step%8==0) letterzframetrg+=1
  	if(letterzframetrg>2) letterzframetrg=1
@@ -236,6 +243,7 @@ function playerpositions()
 		playery=93
 	end
 end
+--
 function tooltip()
 	--tooltip text bout where u at (also allows the use of zstuffs)
 	if playerpos==planet1val then
@@ -275,53 +283,58 @@ function tooltip()
 		print (planettext[9],0,0,7)
 		onplanet=9
 		ablezstuff=1
-
 	end
 end
 --
 function playermovement()
-	if abletomove>0 then
-		if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3))) then
-			if not (playerpos==1 or playerpos==4 or playerpos==7) then
-				spr((arrowlframe[arrowlframetrg]),playerx-8,playery)
-				spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
-				if btnp(5) then
-					playerpos-=1
-					abletomove-=1
-					firsttime=0
+	if not (btn(4) and playerpos==5) then
+		if abletomove>0 then
+			if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3)) or onupgradescreen==1) then
+				if not (playerpos==1 or playerpos==4 or playerpos==7) then
+					spr((arrowlframe[arrowlframetrg]),playerx-8,playery)
+					spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
+					if btnp(5) then
+						playerpos-=1
+						abletomove-=1
+						firsttime=0
+						turnstaken+=1
+					end
 				end
 			end
-		end
-		if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3))) then
-			if not (playerpos==3 or playerpos==6 or playerpos==9) then
-				spr((arrowrframe[arrowrframetrg]),playerx+8,playery)
-				spr((letterxframe[letterxframetrg]),playerx+8,playery-8)
-				if btnp(5) then
-					playerpos+=1
-					abletomove-=1
-					firsttime=0
+			if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3)) or onupgradescreen==1) then
+				if not (playerpos==3 or playerpos==6 or playerpos==9) then
+					spr((arrowrframe[arrowrframetrg]),playerx+8,playery)
+					spr((letterxframe[letterxframetrg]),playerx+8,playery-8)
+					if btnp(5) then
+						playerpos+=1
+						abletomove-=1
+						firsttime=0
+						turnstaken+=1
+					end
 				end
 			end
-		end
-		if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3))) then
-			if not (playerpos==1 or playerpos==2 or playerpos==3) then
-				spr((arrowuframe[arrowuframetrg]),playerx,playery-8)
-				spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
-				if btnp(5) then
-					playerpos-=3
-					abletomove-=1
-					firsttime=0
+			if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3)) or onupgradescreen==1) then
+				if not (playerpos==1 or playerpos==2 or playerpos==3) then
+					spr((arrowuframe[arrowuframetrg]),playerx,playery-8)
+					spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
+					if btnp(5) then
+						playerpos-=3
+						abletomove-=1
+						firsttime=0
+						turnstaken+=1
+					end
 				end
 			end
-		end
-		if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2))) then
-			if not (playerpos==7 or playerpos==8 or playerpos==9) then
-				spr((arrowdframe[arrowdframetrg]),playerx,playery+18)
-				spr((letterxframe[letterxframetrg]),playerx-8,playery+18)
-				if btnp(5) then
-					playerpos+=3
-					abletomove-=1
-					firsttime=0
+			if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2)) or onupgradescreen==1) then
+				if not (playerpos==7 or playerpos==8 or playerpos==9) then
+					spr((arrowdframe[arrowdframetrg]),playerx,playery+18)
+					spr((letterxframe[letterxframetrg]),playerx-8,playery+18)
+					if btnp(5) then
+						playerpos+=3
+						abletomove-=1
+						firsttime=0
+						turnstaken+=1
+					end
 				end
 			end
 		end
@@ -329,49 +342,79 @@ function playermovement()
 end
 --
 function turnpass()
-	if firsttime==0 then
-		spr((letterxframe[letterzframetrg]),playerx+8,playery+8)
+	if not (((btn(0)) or (btn(1)) or (btn(2)) or (btn(3))) and abletomove>0) then
+		if firsttime==0 and not (abletomove==maxabletomove) then
+			spr((letterxframe[letterzframetrg]),playerx+8,playery+8)
+		end
+		if ablezstuff==1 then
+			if (onplanet==5 or onplanet==8 or onplanet==9) and abletomove>0 then
+				spr((letterzframe[letterzframetrg]),playerx-8,playery+8)
+			end
+		end
 	end
-	if ablezstuff==1 then
-		spr((letterzframe[letterzframetrg]),playerx-8,playery+8)
-	end
-	if (btnp(5)) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(4))) then
+
+	if (btnp(5)) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(4))) and not (abletomove==maxabletomove) then
 		if onplanet==5 then
 			if firsttime==0 then
 				abletomove=maxabletomove
-				o2-=1
+				if o2<maxo2 then
+					o2=maxo2
+					turnstaken+=1
+				end
 			end
 		end
 		if onplanet==7 then
 			--
-			abletomove=maxabletomove
+			if abletomove<maxabletomove then
+				abletomove+=1
+			end
 			o2-=2
+			turnstaken+=1
 			--
 		end
-		if onplanet==1 or onplanet==2 or onplanet==3 or onplanet==4 or onplanet==6 or onplanet==8 or onplanet==9 then
+		if onplanet==3 then
+			if abletomove<maxabletomove then
+				abletomove+=1
+			end
+			if o2<maxo2 then
+				o2+=1
+				turnstaken+=1
+			end
+
+		end
+		if onplanet==1 or onplanet==2 or onplanet==4 or onplanet==6 or onplanet==8 or onplanet==9 then
 			--
-			abletomove=maxabletomove
+			if abletomove<maxabletomove then
+				abletomove+=1
+			end
 			o2-=1
+			turnstaken+=1
 			--
 		end
 	end
 	if btnp(4) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(5))) then
 		if onplanet==8 then
 			if gold<maxgold then
-				gold+=1
-				--
-				abletomove=maxabletomove
-				o2-=1
+				if (abletomove>0) then
+					gold+=1
+					--
+					abletomove-=1
+					o2-=1
+					turnstaken+=1
+				end
 				--
 			else
 			end
 		end
 		if onplanet==9 then
 			if iron<maxiron then
-				iron+=1
-				--
-				abletomove=maxabletomove
-				o2-=1
+				if (abletomove>0) then
+					iron+=1
+					--
+					abletomove-=1
+					o2-=1
+					turnstaken+=1
+				end
 				--
 			else
 			end
@@ -381,28 +424,64 @@ function turnpass()
 end
 --
 function hud()
---o2
-spr(8,1,119)
-print (o2,11,120,12)
-print ("/",19,120,12)
-print (maxo2,23,120,12)
---gold
-spr(9,31,119)
-print (gold,39,120,10)
-print ("/",47,120,10)
-print (maxgold,51,120,10)
---iron
-spr(10,67,119)
-print (iron,75,120,6)
-print ("/",83,120,6)
-print (maxiron,87,120,6)
+	--o2
+	spr(8,1,119)
+	print (o2,11,120,12)
+	print ("/",19,120,12)
+	print (maxo2,23,120,12)
+	--gold
+	spr(9,31,119)
+	print (gold,39,120,10)
+	print ("/",47,120,10)
+	print (maxgold,51,120,10)
+	--iron
+	spr(10,67,119)
+	print (iron,75,120,6)
+	print ("/",83,120,6)
+	print (maxiron,87,120,6)
+	--money
+	spr(11,99,119)
+	print (money,107,120,11)
+	--abletomove
+	if (abletomove==0) then
+		spr(84,1,105)
+	else
+		if (maxabletomove==1) then
+			spr(85,1,105)
+		elseif (maxabletomove==2) then
+			if (abletomove==2) then
+				spr(85,1,105)
+			else
+				spr(100,1,105)
+			end
+		elseif (maxabletomove==3) then
+			if (abletomove==3) then
+				spr(85,1,105)
+			elseif (abletomove==2) then
+				spr(102,1,105)
+			else
+				spr(101,1,105)
+			end
+		elseif (maxabletomove==4) then
+			if (abletomove==4) then
+				spr(85,1,105)
+			elseif (abletomove==3) then
+				spr(105,1,105)
+			elseif (abletomove==2) then
+				spr(104,1,105)
+			else
+				spr(103,1,105)
+			end
+		end
+	end
+	--turns
+	print(turnstaken,105,1,7)
 
---money
-spr(11,99,119)
-print (money,107,120,11)
---tooltip help
---print ("z STANDS FOR zMINING",2,100,7)
---print ("x STANDS FOR xCHILL",2,110,7)
+
+
+	--tooltip help
+	--z special actions
+	--x move & slep
 
 
 
@@ -413,9 +492,10 @@ function intro()
 	spr(0,59,59)
 	print ("mesco's station",33,70)
 	print ("PRESS z TO BEGIN",32,82)
-	if (btn(4)) then 
-	introdone=1 
-	startgame=1
+	if (btnp(4)) then 
+		introdone=1 
+		startgame=1
+		playerpos=5
 	end
 end
 --
@@ -423,14 +503,38 @@ end
 function upgradestation()
 	if playerpos==5 then
 		spr((letterzframe[letterzframetrg]),playerx-8,playery+8)
-		if btn(4) then
-			cls()
+
+		
+		if introtriggerupgrade==1 then
+			if (btnp(4) and onupgradescreen==0) then
+				coolasstimer=0
+				onupgradescreen=1
+			end
 		end
+	end
+end
+
+
+function upgradescreen()
+	if onupgradescreen==1 then
+	cls()
+	--print (coolasstimer)
+	end
+	if coolasstimer!=0 then
+		if btnp(4) then
+		onupgradescreen=0
+		end
+	end
+end
+
+function deathcauses()
+	if o2<=0 then
+		deadof=1
 	end
 
 end
 
---
+-----------------------------------------------
 function game()
 	cls()
 	hud()
@@ -438,12 +542,17 @@ function game()
 		randompos()
 		randompostrigger=1
 	end
+	if planet4frametrg==8 then
+		introtriggerupgrade=1
+	end
 	planetstuff()
 	playermovement()
 	playerpositions()
 	tooltip()
 	turnpass()
 	upgradestation()
+	upgradescreen()
+	deathcauses()
 
 end
 
@@ -456,12 +565,17 @@ end
 
 function _update()
 	animations()
+	if coolasstimer<9999 then
+		coolasstimer+=1
+	else
+		coolasstimer=1
+	end
 end
 
 function _draw()
 	if introdone==0 then intro() end
 	if startgame==1 then game() end
-	if gameend==1 then gameend() end
+	if deadof!=0 then gameend() end
 end
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
@@ -502,28 +616,28 @@ __gfx__
 00111100001111000011110000111100001111000011110000111100001111000000000000000000000000000000000000000000000000000000000000098000
 0000008000000080bb000080111111110cc000b00aa0000066600000000000000000000000000000000000000000000000000000000000000000000000000000
 0000080800606808bbbb080801cba810c00c0bbba000000006000000000000000000000000000000000000000000000000000000000000000000000000000000
-4444440006c6c60000bbb00001111180c00c0000a0aa000006000000000000000000000000000000000000000000000000000000000000000000000000000000
-45aa540006c6c6000000bbb000bbb808c00c0cc0a00a0bbb06000bbb000000000000000000000000000000000000000000000000000000000000000000000000
-4444440006c6c6000000bbb00b0b0000c00cc00c0aa0b0b06660b0b0000000000000000000000000000000000000000000000000000000000000000000000000
-4555540006c6c60000bbb00000bb00000cc000c00c000bb00c000bb0000000000000000000000000000000000000000000000000000000000000000000000000
+4444440006c6c60000bbbb0001111180c00c0000a0aa000006000000000000000000000000000000000000000000000000000000000000000000000000000000
+45aa540006c6c6000000bbbb00bbb808c00c0cc0a00a0bbb06000bbb000000000000000000000000000000000000000000000000000000000000000000000000
+4444440006c6c6000000bbbb0b0b0000c00cc00c0aa0b0b06660b0b0000000000000000000000000000000000000000000000000000000000000000000000000
+4555540006c6c60000bbbb0000bb00000cc000c00c000bb00c000bb0000000000000000000000000000000000000000000000000000000000000000000000000
 4555540006c6c600bbbb000000b0b00000000c0000c00b0b00c00b0b000000000000000000000000000000000000000000000000000000000000000000000000
 4444440006666600bb0000000bbb00000000cccc0c00bbb00c00bbb0000000000000000000000000000000000000000000000000000000000000000000000000
-0000008000000080bb00008011111111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000080800606808bbbb080801cba810000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4444448006c6c68000bbb08001111180000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-45aa580806c6c8080000b8b800bbb808000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4444440006c6c6000000bbb00b0b0080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4555540006c6c60000bbb00000bb0808000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4555540006c6c600bbbb000000b0b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4444440006666600bb0000000bbb0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000008000000080bb00008011111111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000080800606808bbbb080801cba810000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4444448006c6c68000bbb08001111180000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-45aa580806c6c8080000b8b800bbb808000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4444448006c6c6800000bb800b0b0080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4555580806c6c80800bbb80800bb0808000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4555540006c6c600bbbb000000b0b080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-4444440006666600bb0000000bbb0808000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000008000000080bb0000801111111155000000bb00000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000080800606808bbbb080801cba81055550000bbbb000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+4444448006c6c68000bbbb80011111800055550000bbbb0000000000000000000000000000000000000000000000000000000000000000000000000000000000
+45aa580806c6c8080000b8b800bbb808000055550000bbbb00000000000000000000000000000000000000000000000000000000000000000000000000000000
+4444440006c6c6000000bbbb0b0b0080000055550000bbbb00000000000000000000000000000000000000000000000000000000000000000000000000000000
+4555540006c6c60000bbbb0000bb08080055550000bbbb0000000000000000000000000000000000000000000000000000000000000000000000000000000000
+4555540006c6c600bbbb000000b0b00055550000bbbb000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+4444440006666600bb0000000bbb000055000000bb00000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000008000000080bb00008011111111bb000000bb000000bb000000bb000000bb000000bb000000000000000000000000000000000000000000000000000000
+0000080800606808bbbb080801cba810bbbb0000bbbb0000bbbb0000bb550000bbbb0000bbbb0000000000000000000000000000000000000000000000000000
+4444448006c6c68000bbbb800111118000bb550000b5550000bbbb000055550000bb550000bbbb00000000000000000000000000000000000000000000000000
+45aa580806c6c8080000b8b800bbb80800005555000055550000b55500005555000055550000bb55000000000000000000000000000000000000000000000000
+4444448006c6c6800000bb8b0b0b008000005555000055550000b55500005555000055550000bb55000000000000000000000000000000000000000000000000
+4555580806c6c80800bbb80800bb080800bb550000b5550000bbbb000055550000bb550000bbbb00000000000000000000000000000000000000000000000000
+4555540006c6c600bbbb000000b0b080bbbb0000bbbb0000bbbb0000bb550000bbbb0000bbbb0000000000000000000000000000000000000000000000000000
+4444440006666600bb0000000bbb0808bb000000bb000000bb000000bb000000bb000000bb000000000000000000000000000000000000000000000000000000
 __label__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
