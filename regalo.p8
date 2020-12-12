@@ -80,8 +80,8 @@ function _init()
 	zstuff=0
 	coolasstimer=0
 	--
-	o2=5
-	maxo2=5
+	o2=6
+	maxo2=6
 	gold=0
 	maxgold=5
 	iron=0
@@ -94,8 +94,19 @@ function _init()
 	introtriggerupgrade=0
 	--
 	deadof=0
-
-
+	--
+	upgradespace=0
+	upgradeo2=0
+	upgrademove=0	
+	pricemult=1		--the 4th upgrade
+	--
+	goldprice=2
+	ironprice=1
+	--
+	o2animgettrigger=0
+	o2animlosetrigger=0
+	irongettrigger=0
+	goldgettrigger=0
 
 end
 ---------------------------------------------------------------------------------
@@ -139,12 +150,15 @@ function animations()
 	letterx.step+=1
  	if(letterx.step%8==0) letterxframetrg+=1
  	if(letterxframetrg>2) letterxframetrg=1
-
+	
 
 
 
 end
 --
+
+--
+
 function planetstuff()
 	spr((planet1frame[planet1frametrg]),mappos[(planet1val*2)-1],mappos[(planet1val*2)])	--GAS PLANET
 	spr((planet2frame[planet2frametrg]),mappos[(planet2val*2)-1],mappos[(planet2val*2)])	--WATERY ONE
@@ -290,7 +304,7 @@ end
 function playermovement()
 	if not (btn(4) and playerpos==5) then
 		if abletomove>0 then
-			if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3)) or onupgradescreen==1) then
+			if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
 				if not (playerpos==1 or playerpos==4 or playerpos==7) then
 					spr((arrowlframe[arrowlframetrg]),playerx-8,playery)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
@@ -302,7 +316,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3)) or onupgradescreen==1) then
+			if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
 				if not (playerpos==3 or playerpos==6 or playerpos==9) then
 					spr((arrowrframe[arrowrframetrg]),playerx+8,playery)
 					spr((letterxframe[letterxframetrg]),playerx+8,playery-8)
@@ -314,7 +328,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3)) or onupgradescreen==1) then
+			if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
 				if not (playerpos==1 or playerpos==2 or playerpos==3) then
 					spr((arrowuframe[arrowuframetrg]),playerx,playery-8)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
@@ -326,7 +340,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2)) or onupgradescreen==1) then
+			if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2)) or onupgradescreen==1 or (btn(4))) then
 				if not (playerpos==7 or playerpos==8 or playerpos==9) then
 					spr((arrowdframe[arrowdframetrg]),playerx,playery+18)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery+18)
@@ -342,6 +356,8 @@ function playermovement()
 	end
 end
 --
+
+
 function turnpass()
 	if not (((btn(0)) or (btn(1)) or (btn(2)) or (btn(3))) and abletomove>0) then
 		if firsttime==0 and not (abletomove==maxabletomove) then
@@ -359,8 +375,10 @@ function turnpass()
 			if firsttime==0 then
 				abletomove=maxabletomove
 				if o2<maxo2 then
+					o2animgettrigger=1
 					o2=maxo2
 					turnstaken+=1
+
 				end
 			end
 		end
@@ -371,6 +389,7 @@ function turnpass()
 			end
 			o2-=2
 			turnstaken+=1
+			o2animlosetrigger=1
 			--
 		end
 		if onplanet==3 then
@@ -378,6 +397,7 @@ function turnpass()
 				abletomove+=1
 			end
 			if o2<maxo2 then
+				o2animgettrigger=1
 				o2+=1
 				turnstaken+=1
 			end
@@ -390,6 +410,7 @@ function turnpass()
 			end
 			o2-=1
 			turnstaken+=1
+			o2animlosetrigger=1
 			--
 		end
 	end
@@ -398,6 +419,7 @@ function turnpass()
 			if gold<maxgold then
 				if (abletomove>0) then
 					gold+=1
+					goldgettrigger=1
 					--
 					abletomove-=1
 					o2-=1
@@ -411,6 +433,7 @@ function turnpass()
 			if iron<maxiron then
 				if (abletomove>0) then
 					iron+=1
+					irongettrigger=1
 					--
 					abletomove-=1
 					o2-=1
@@ -484,6 +507,94 @@ function hud()
 	--z special actions
 	--x move & slep
 
+	if o2animgettrigger!=0 then
+		o2animgettimer=o2animgettimer+1
+		spr(68,playerx-8,playery-2-o2animgetydisp)
+		if o2animgettimer>=5 and o2animgettimer<10 then
+		o2animgetydisp=1
+		elseif o2animgettimer>=10 and o2animgettimer<17 then
+		o2animgetydisp=2
+		elseif o2animgettimer>=17 and o2animgettimer<26 then
+		o2animgetydisp=3
+		elseif o2animgettimer>=26 and o2animgettimer<35 then
+		o2animgetydisp=4
+		elseif o2animgettimer>=35 and o2animgettimer<45 then
+		o2animgetydisp=5
+		end
+		if o2animgettimer>=45 then
+		o2animgettrigger=0
+		end
+	else
+	o2animgettimer=0
+	o2animgetydisp=0
+	end
+
+	if o2animlosetrigger!=0 then
+		o2animlosetimer=o2animlosetimer+1
+		spr(69,playerx-8,playery-7+o2animloseydisp)
+		if o2animlosetimer>=5 and o2animlosetimer<10 then
+		o2animloseydisp=1
+		elseif o2animlosetimer>=10 and o2animlosetimer<17 then
+		o2animloseydisp=2
+		elseif o2animlosetimer>=17 and o2animlosetimer<26 then
+		o2animloseydisp=3
+		elseif o2animlosetimer>=26 and o2animlosetimer<35 then
+		o2animloseydisp=4
+		elseif o2animlosetimer>=35 and o2animlosetimer<45 then
+		o2animloseydisp=5
+		end
+		if o2animlosetimer>=45 then
+		o2animlosetrigger=0
+		end
+	else
+	o2animlosetimer=0
+	o2animloseydisp=0
+	end
+
+	if irongettrigger!=0 then
+		irongettimer=irongettimer+1
+		spr(71,playerx+8,playery-2-irongetydisp)
+		if irongettimer>=5 and irongettimer<10 then
+		irongetydisp=1
+		elseif irongettimer>=10 and irongettimer<17 then
+		irongetydisp=2
+		elseif irongettimer>=17 and irongettimer<26 then
+		irongetydisp=3
+		elseif irongettimer>=26 and irongettimer<35 then
+		irongetydisp=4
+		elseif irongettimer>=35 and irongettimer<45 then
+		irongetydisp=5
+		end
+		if irongettimer>=45 then
+		irongettrigger=0
+		end
+	else
+	irongettimer=0
+	irongetydisp=0
+	end
+
+	if goldgettrigger!=0 then
+		goldgettimer=goldgettimer+1
+		spr(70,playerx+8,playery-2-goldgetydisp)
+		if goldgettimer>=5 and goldgettimer<10 then
+		goldgetydisp=1
+		elseif goldgettimer>=10 and goldgettimer<17 then
+		goldgetydisp=2
+		elseif goldgettimer>=17 and goldgettimer<26 then
+		goldgetydisp=3
+		elseif goldgettimer>=26 and goldgettimer<35 then
+		goldgetydisp=4
+		elseif goldgettimer>=35 and goldgettimer<45 then
+		goldgetydisp=5
+		end
+		if goldgettimer>=45 then
+		goldgettrigger=0
+		end
+	else
+	goldgettimer=0
+	goldgetydisp=0
+	end
+
 
 
 end
@@ -502,10 +613,9 @@ end
 --
 --
 function upgradestation()
-	if playerpos==5 then
+	if playerpos==5 and not (btn(5) or btn(0) or btn(1) or btn(2) or btn(3)) then
 		spr((letterzframe[letterzframetrg]),playerx-8,playery+8)
 
-		
 		if introtriggerupgrade==1 then
 			if (btnp(4) and onupgradescreen==0) then
 				coolasstimer=0
@@ -560,6 +670,11 @@ end
 function gameend()
 	cls()
 	print ("game_end")
+	if deadof==1 then --o2 depletion
+
+
+	end
+	print ("You got "..money.."$ in "..turnstaken.." turns")
 
 
 end
@@ -615,14 +730,14 @@ __gfx__
 15558551155855411545584114558841155488411448884114485551145555510088000008800000000088000000088000098000000980000098880009888880
 01558810015588100154881001448810014488100144881001445510014555100008000000800000000080000000080000098000000000000009800000988800
 00111100001111000011110000111100001111000011110000111100001111000000000000000000000000000000000000000000000000000000000000098000
-0000008000000080bb000080111111110cc000b00aa0000066600000000000000000000000000000000000000000000000000000000000000000000000000000
-0000080800606808bbbb080801cba810c00c0bbba000000006000000000000000000000000000000000000000000000000000000000000000000000000000000
-4444440006c6c60000bbbb0001111180c00c0000a0aa000006000000000000000000000000000000000000000000000000000000000000000000000000000000
-45aa540006c6c6000000bbbb00bbb808c00c0cc0a00a0bbb06000bbb000000000000000000000000000000000000000000000000000000000000000000000000
-4444440006c6c6000000bbbb0b0b0000c00cc00c0aa0b0b06660b0b0000000000000000000000000000000000000000000000000000000000000000000000000
-4555540006c6c60000bbbb0000bb00000cc000c00c000bb00c000bb0000000000000000000000000000000000000000000000000000000000000000000000000
-4555540006c6c600bbbb000000b0b00000000c0000c00b0b00c00b0b000000000000000000000000000000000000000000000000000000000000000000000000
-4444440006666600bb0000000bbb00000000cccc0c00bbb00c00bbb0000000000000000000000000000000000000000000000000000000000000000000000000
+0000008000000080bb000080111111110cc000b00cc00888000000b0000000b00000000000000000000000000000000000000000000000000000000000000000
+0000080800606808bbbb080801cba810c00c0bbbc00c008000000bbb00000bbb0000000000000000000000000000000000000000000000000000000000000000
+4444440006c6c60000bbbb0001111180c00c0000c00c0000000aa000006660000000000000000000000000000000000000000000000000000000000000000000
+45aa540006c6c6000000bbbb00bbb808c00c0cc0c00c0cc000a00000000600000000000000000000000000000000000000000000000000000000000000000000
+4444440006c6c6000000bbbb0b0b0000c00cc00cc00cc00c00a0aa00000600000000000000000000000000000000000000000000000000000000000000000000
+4555540006c6c60000bbbb0000bb00000cc000c00cc000c000a00a00000600000000000000000000000000000000000000000000000000000000000000000000
+4555540006c6c600bbbb000000b0b00000000c0000000c00000aa000006660000000000000000000000000000000000000000000000000000000000000000000
+4444440006666600bb0000000bbb00000000cccc0000cccc00000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000008000000080bb0000801111111155000000bb00000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 0000080800606808bbbb080801cba81055550000bbbb000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 4444448006c6c68000bbbb80011111800055550000bbbb0000000000000000000000000000000000000000000000000000000000000000000000000000000000
