@@ -645,6 +645,7 @@ function deathcauses()
 
 end
 
+
 -----------------------------------------------
 function game()
 	cls()
