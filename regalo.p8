@@ -630,18 +630,24 @@ end
 
 
 function upgradescreenmovement()
+	if btnp(up) 
+
+
+
+
+
 	if upgradepos==1 then
-		
+		upgradeposy=20
 	elseif upgradepos==2 then
-
+		upgradeposy=40
 	elseif upgradepos==3 then
-		
+		upgradeposy=60
 	elseif upgradepos==4 then
-
+		upgradeposy=80
 	elseif upgradepos==5 then
-
+		upgradeposy=100
 	elseif upgradepos==6 then
-		
+		upgradeposy=120 				--have to change these
 	end
 end
 
