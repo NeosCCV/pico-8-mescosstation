@@ -107,6 +107,9 @@ function _init()
 	o2animlosetrigger=0
 	irongettrigger=0
 	goldgettrigger=0
+	--
+	upgradepos=1
+	upgradeposy=20
 
 end
 ---------------------------------------------------------------------------------
@@ -626,10 +629,60 @@ function upgradestation()
 end
 
 
+function upgradescreenmovement()
+	if upgradepos==1 then
+		
+	elseif upgradepos==2 then
+
+	elseif upgradepos==3 then
+		
+	elseif upgradepos==4 then
+
+	elseif upgradepos==5 then
+
+	elseif upgradepos==6 then
+		
+	end
+end
+
 function upgradescreen()
 	if onupgradescreen==1 then
 	cls()
+	upgradescreenmovement()
 	--print (coolasstimer)
+		--create upgradepos
+		--1 max o2
+		--2 max items
+		--3 max movement
+		--4 sell iron
+		--5 sell gold
+		--6 buy warp and win
+	spr("flecha",upgradeposy,20)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	end
 	if coolasstimer!=0 then
 		if btnp(4) then
