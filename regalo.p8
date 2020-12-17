@@ -671,7 +671,6 @@ function upgradescreen()
 	spr("flecha",upgradeposy,20)
 		--hud
 
-
 			--have to do this
 
 
