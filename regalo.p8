@@ -98,7 +98,7 @@ function _init()
 	upgradespace=0
 	upgradeo2=0
 	upgrademove=0	
-	pricemult=1		--the 4th upgrade
+	pricemult=1		--the 6th upgrade
 	--
 	goldprice=2
 	ironprice=1
@@ -630,11 +630,13 @@ end
 
 
 function upgradescreenmovement()
-	if btnp(up) 
-
-
-
-
+	if btnp(up) then
+		if upgradepos!=1 then
+			upgradepos-=1
+		end
+		if upgradepos!=7 then
+			upgradepos+=1
+		end
 
 	if upgradepos==1 then
 		upgradeposy=20
@@ -647,7 +649,9 @@ function upgradescreenmovement()
 	elseif upgradepos==5 then
 		upgradeposy=100
 	elseif upgradepos==6 then
-		upgradeposy=120 				--have to change these
+		upgradeposy=120 	
+	elseif upgradepos==7 then
+		upgradeposy=140 			--have to change these
 	end
 end
 
@@ -662,33 +666,85 @@ function upgradescreen()
 		--3 max movement
 		--4 sell iron
 		--5 sell gold
-		--6 buy warp and win
+		--6 improve ratio
+		--7 buy warp and win
 	spr("flecha",upgradeposy,20)
+		--hud
+
+
+			--have to do this
+
+
+		--triggers
+		if bntp(5) then
+			if upgradepos==1 then
+				if maxo2==6 and money>=5 then
+					maxo2=12
+					money-=5
+				elseif maxo2==12 and money>=50 then
+					maxo2=18
+					money-=50
+				elseif maxo2==18 and money>=100 then
+					maxo2=25
+					money-=100
+				end
+			end
+			if upgradepos==2 then
+				if maxiron==5 and money>=5 then
+					maxiron=10
+					maxgold=10
+					money-=5
+				elseif maxiron==10 and money>=50 then
+					maxiron=15
+					maxgold=15
+					money-=50
+				elseif maxiron==15 and money>=100 then
+					maxiron=20
+					maxgold=20
+					money-=100
+				end
+			end
+			if upgradepos==3 then
+				if maxabletomove==1 and money>=5 then
+					maxabletomove=2
+					money-=5
+				elseif maxabletomove==2 and money>=50 then
+					maxabletomove=3
+					money-=50
+				elseif maxabletomove==3 and money>=100 then
+					maxabletomove=4
+					money-=100
+				end
+			end
+			if upgradepos==4 then
+				money=iron*pricemult
+				iron=0
+			end
+			if upgradepos==5 then
+				money=gold*pricemult
+			end
+			if upgradepos==6 then
+				if pricemult==1 and money>=50 then
+					pricemult=2
+					money-=50
+				elseif pricemult==2 and money>=100 then
+					pricemult=3
+					money-=100
+				elseif pricemult==3 and money>=500 then
+					pricemult=4
+					money-=500
+				end
+			end
+			if upgradepos==7 then
+				if money==1000 then
+					--game_end()
+					money-=1000
+				end
+			end
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		end
 	end
 	if coolasstimer!=0 then
 		if btnp(4) then
