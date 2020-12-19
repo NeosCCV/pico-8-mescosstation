@@ -168,7 +168,9 @@ function _init()
 	maxgold=5
 	iron=0
 	maxiron=5
+	---------------------------------------------------------------
 	money=10000
+	---------------------------------------------------------------
 	--
 	turnstaken=0
 	--
@@ -828,18 +830,24 @@ function upgradescreen()
 		--max o2
 			if maxo2==6 then
 				spr((upgrades12frame[upgrades12frametrg]),25,14)
+				print ("PONGAMOS OTRA BOMBONA",35,12,7)
+				print ("5$",35,18,11)
 				if money>=5 then
 					spr((letterxframe[letterzframetrg]),12,14)
 				end
 			end
 			if maxo2==12 then
 				spr((upgrades22frame[upgrades12frametrg]),25,14)
+				print ("OTRA MAS VA >:3",35,12,7)
+				print ("50$",35,18,11)
 				if money>=50 then
 					spr((letterxframe[letterzframetrg]),12,14)
 				end
 			end
 			if maxo2==18 then
 				spr((upgrades32frame[upgrades32frametrg]),25,14)
+				print ("LA ULTIMA YA EH",35,12,7)
+				print ("100$",35,18,11)
 				if money>=100 then
 					spr((letterxframe[letterzframetrg]),12,14)
 				end
@@ -850,18 +858,24 @@ function upgradescreen()
 		--max items
 			if maxiron==5 then
 				spr((upgrades11frame[upgrades11frametrg]),26,29)
+				print ("OSTRAS, UNOS BOLSILLOS",35,27,7)
+				print ("5$",35,33,11)
 				if money>=5 then
 					spr((letterxframe[letterzframetrg]),12,29)
 				end
 			end
 			if maxiron==10 then
 				spr((upgrades21frame[upgrades11frametrg]),26,29)
+				print ("BOLSILLOS GIGANTES :O",35,27,7)
+				print ("50$",35,33,11)
 				if money>=50 then
 					spr((letterxframe[letterzframetrg]),12,29)
 				end
 			end
 			if maxiron==15 then
 				spr((upgrades31frame[upgrades11frametrg]),26,29)
+				print ("POCKETS AS DEEP AS u",35,27,7)
+				print ("100$",35,33,11)
 				if money>=100 then
 					spr((letterxframe[letterzframetrg]),12,29)
 				end
@@ -872,18 +886,24 @@ function upgradescreen()
 		--max movement
 			if maxabletomove==1 then
 				spr((upgrades13frame[upgrades13frametrg]),26,45)
+				print ("UN MONSTER O QUE >:o",35,43,7)
+				print ("5$",35,49,11)
 				if money>=5 then
 					spr((letterxframe[letterzframetrg]),12,44)
 				end
 			end
 			if maxabletomove==2 then
 				spr((upgrades23frame[upgrades23frametrg]),26,45)
+				print ("LETS GO POCOYO",35,43,7)
+				print ("50$",35,49,11)
 				if money>=50 then
 					spr((letterxframe[letterzframetrg]),12,44)
 				end
 			end
 			if maxabletomove==3 then
 				spr((upgrades33frame[upgrades33frametrg]),26,45)
+				print ("GOTTA GO FASTO",35,43,7)
+				print ("100$",35,49,11)
 				if money>=100 then
 					spr((letterxframe[letterzframetrg]),12,44)
 				end
@@ -893,29 +913,41 @@ function upgradescreen()
 			end
 		--sell iron
 			spr((upgradesironframe[upgradesironframetrg]),26,58)
+			print ("VENDER IRON",35,57,7)
 			if iron>0 then
 				spr((letterxframe[letterzframetrg]),12,59)
+				ironvalueinmoneys=iron*1*pricemult
+				print("+"..ironvalueinmoneys.."$",35,63,11)
 			end
 		--sell gold
 			spr((upgradesgoldframe[upgradesgoldframetrg]),26,73)
+			print ("VENDER GOLD",35,72,7)
 			if gold>0 then
 				spr((letterxframe[letterzframetrg]),12,74)
+				goldvalueinmoneys=gold*2*pricemult
+				print("+"..goldvalueinmoneys.."$",35,78,11)
 			end
 		--improve ratio
 			if pricemult==1 then
 				spr((upgrades14frame[upgrades14frametrg]),26,89)
+				print ("IMPROVE RATES",35,87,7)
+				print ("50$",35,93,11)
 				if money>=50 then
 					spr((letterxframe[letterzframetrg]),12,89)
 				end
 			end
 			if pricemult==2 then
 				spr((upgrades24frame[upgrades24frametrg]),26,89)
+				print ("USE BILL GATE'S CHIP",35,87,7)
+				print ("100$",35,93,11)
 				if money>=100 then
 					spr((letterxframe[letterzframetrg]),12,89)
 				end
 			end
 			if pricemult==3 then
 				spr((upgrades34frame[upgrades34frametrg]),26,89)
+				print ("ERIC TRUMP IS MY FRIEND",35,87,7)
+				print ("500$",35,93,11)
 				if money>=500 then
 					spr((letterxframe[letterzframetrg]),12,89)
 				end
@@ -937,12 +969,15 @@ function upgradescreen()
 				if maxo2==6 and money>=5 then
 					maxo2=12
 					money-=5
+					o2=maxo2
 				elseif maxo2==12 and money>=50 then
 					maxo2=18
 					money-=50
+					o2=maxo2
 				elseif maxo2==18 and money>=100 then
 					maxo2=25
 					money-=100
+					o2=maxo2
 				end
 			end
 			if upgradepos==2 then
@@ -997,6 +1032,7 @@ function upgradescreen()
 			end
 			if upgradepos==7 then
 				if money==1000 then
+					deadof=1
 					--game_end()
 					money-=1000
 				end
@@ -1017,6 +1053,7 @@ end
 function deathcauses()
 	if o2<=0 then
 		deadof=1
+		startgame=0
 	end
 
 end
