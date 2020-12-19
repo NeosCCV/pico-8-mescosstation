@@ -98,7 +98,7 @@ function _init()
 	upgradespace=0
 	upgradeo2=0
 	upgrademove=0	
-	pricemult=1		--the 4th upgrade
+	pricemult=1		--the 6th upgrade
 	--
 	goldprice=2
 	ironprice=1
@@ -107,6 +107,9 @@ function _init()
 	o2animlosetrigger=0
 	irongettrigger=0
 	goldgettrigger=0
+	--
+	upgradepos=1
+	upgradeposy=20
 
 end
 ---------------------------------------------------------------------------------
@@ -302,9 +305,9 @@ function tooltip()
 end
 --
 function playermovement()
-	if not (btn(4) and playerpos==5) then
+	if not (btnp(4) and playerpos==5) then
 		if abletomove>0 then
-			if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
+			if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btnp(4))) then
 				if not (playerpos==1 or playerpos==4 or playerpos==7) then
 					spr((arrowlframe[arrowlframetrg]),playerx-8,playery)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
@@ -316,7 +319,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
+			if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btnp(4))) then
 				if not (playerpos==3 or playerpos==6 or playerpos==9) then
 					spr((arrowrframe[arrowrframetrg]),playerx+8,playery)
 					spr((letterxframe[letterxframetrg]),playerx+8,playery-8)
@@ -328,7 +331,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
+			if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3)) or onupgradescreen==1 or (btnp(4))) then
 				if not (playerpos==1 or playerpos==2 or playerpos==3) then
 					spr((arrowuframe[arrowuframetrg]),playerx,playery-8)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
@@ -340,7 +343,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2)) or onupgradescreen==1 or (btn(4))) then
+			if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2)) or onupgradescreen==1 or (btnp(4))) then
 				if not (playerpos==7 or playerpos==8 or playerpos==9) then
 					spr((arrowdframe[arrowdframetrg]),playerx,playery+18)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery+18)
@@ -370,7 +373,7 @@ function turnpass()
 		end
 	end
 
-	if (btnp(5)) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(4))) and not (abletomove==maxabletomove) then
+	if (btnp(5)) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(4))) and (not (abletomove==maxabletomove)) or (onplanet==5 and o2<maxo2) then
 		if onplanet==5 then
 			if firsttime==0 then
 				abletomove=maxabletomove
@@ -414,7 +417,7 @@ function turnpass()
 			--
 		end
 	end
-	if btnp(4) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(5))) then
+	if btnp(4) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btnp(5))) then
 		if onplanet==8 then
 			if gold<maxgold then
 				if (abletomove>0) then
@@ -613,7 +616,7 @@ end
 --
 --
 function upgradestation()
-	if playerpos==5 and not (btn(5) or btn(0) or btn(1) or btn(2) or btn(3)) then
+	if playerpos==5 and not (btnp(5) or btn(0) or btn(1) or btn(2) or btn(3)) then
 		spr((letterzframe[letterzframetrg]),playerx-8,playery+8)
 
 		if introtriggerupgrade==1 then
@@ -626,14 +629,128 @@ function upgradestation()
 end
 
 
+function upgradescreenmovement()
+	if btnp(2) then
+		if upgradepos!=1 then
+			upgradepos-=1
+		end
+	end
+	if btnp(3) then
+		if upgradepos!=7 then
+			upgradepos+=1
+		end
+	end
+
+	if upgradepos==1 then
+		upgradeposy=20
+	elseif upgradepos==2 then
+		upgradeposy=35
+	elseif upgradepos==3 then
+		upgradeposy=50
+	elseif upgradepos==4 then
+		upgradeposy=65
+	elseif upgradepos==5 then
+		upgradeposy=80
+	elseif upgradepos==6 then
+		upgradeposy=95 	
+	elseif upgradepos==7 then
+		upgradeposy=110		--have to change these
+	end
+end
+
 function upgradescreen()
 	if onupgradescreen==1 then
 	cls()
+	hud()
+	upgradescreenmovement()
 	--print (coolasstimer)
+		--create upgradepos
+		--1 max o2
+		--2 max items
+		--3 max movement
+		--4 sell iron
+		--5 sell gold
+		--6 improve ratio
+		--7 buy warp and win
+	spr(112,20,upgradeposy)
+		--hud
+			--have to do this
+		--triggers
+		if btnp(5) then
+			if upgradepos==1 then
+				if maxo2==6 and money>=5 then
+					maxo2=12
+					money-=5
+				elseif maxo2==12 and money>=50 then
+					maxo2=18
+					money-=50
+				elseif maxo2==18 and money>=100 then
+					maxo2=25
+					money-=100
+				end
+			end
+			if upgradepos==2 then
+				if maxiron==5 and money>=5 then
+					maxiron=10
+					maxgold=10
+					money-=5
+				elseif maxiron==10 and money>=50 then
+					maxiron=15
+					maxgold=15
+					money-=50
+				elseif maxiron==15 and money>=100 then
+					maxiron=20
+					maxgold=20
+					money-=100
+				end
+			end
+			if upgradepos==3 then
+				if maxabletomove==1 and money>=5 then
+					maxabletomove=2
+					money-=5
+				elseif maxabletomove==2 and money>=50 then
+					maxabletomove=3
+					money-=50
+				elseif maxabletomove==3 and money>=100 then
+					maxabletomove=4
+					money-=100
+				end
+			end
+			if upgradepos==4 then
+				money+=iron*pricemult
+				iron=0
+			end
+			if upgradepos==5 then
+				money+=gold*pricemult*2
+				gold=0
+			end
+			if upgradepos==6 then
+				if pricemult==1 and money>=50 then
+					pricemult=2
+					money-=50
+				elseif pricemult==2 and money>=100 then
+					pricemult=3
+					money-=100
+				elseif pricemult==3 and money>=500 then
+					pricemult=4
+					money-=500
+				end
+			end
+			if upgradepos==7 then
+				if money==1000 then
+					--game_end()
+					money-=1000
+				end
+			end
+
+
+
+		end
 	end
 	if coolasstimer!=0 then
 		if btnp(4) then
 		onupgradescreen=0
+		upgradepos=1
 		end
 	end
 end
@@ -754,6 +871,12 @@ __gfx__
 4555580806c6c80800bbb80800bb080800bb550000b5550000bbbb000055550000bb550000bbbb00000000000000000000000000000000000000000000000000
 4555540006c6c600bbbb000000b0b080bbbb0000bbbb0000bbbb0000bb550000bbbb0000bbbb0000000000000000000000000000000000000000000000000000
 4444440006666600bb0000000bbb0808bb000000bb000000bb000000bb000000bb000000bb000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00777000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __label__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
