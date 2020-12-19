@@ -305,9 +305,9 @@ function tooltip()
 end
 --
 function playermovement()
-	if not (btn(4) and playerpos==5) then
+	if not (btnp(4) and playerpos==5) then
 		if abletomove>0 then
-			if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
+			if (btn(0)) and not ((btn(1)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btnp(4))) then
 				if not (playerpos==1 or playerpos==4 or playerpos==7) then
 					spr((arrowlframe[arrowlframetrg]),playerx-8,playery)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
@@ -319,7 +319,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
+			if (btn(1)) and not ((btn(0)) or (btn(2)) or (btn(3)) or onupgradescreen==1 or (btnp(4))) then
 				if not (playerpos==3 or playerpos==6 or playerpos==9) then
 					spr((arrowrframe[arrowrframetrg]),playerx+8,playery)
 					spr((letterxframe[letterxframetrg]),playerx+8,playery-8)
@@ -331,7 +331,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3)) or onupgradescreen==1 or (btn(4))) then
+			if (btn(2)) and not ((btn(0)) or (btn(1)) or (btn(3)) or onupgradescreen==1 or (btnp(4))) then
 				if not (playerpos==1 or playerpos==2 or playerpos==3) then
 					spr((arrowuframe[arrowuframetrg]),playerx,playery-8)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery-8)
@@ -343,7 +343,7 @@ function playermovement()
 					end
 				end
 			end
-			if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2)) or onupgradescreen==1 or (btn(4))) then
+			if (btn(3)) and not ((btn(0)) or (btn(1)) or (btn(2)) or onupgradescreen==1 or (btnp(4))) then
 				if not (playerpos==7 or playerpos==8 or playerpos==9) then
 					spr((arrowdframe[arrowdframetrg]),playerx,playery+18)
 					spr((letterxframe[letterxframetrg]),playerx-8,playery+18)
@@ -373,7 +373,7 @@ function turnpass()
 		end
 	end
 
-	if (btnp(5)) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(4))) and not (abletomove==maxabletomove) then
+	if (btnp(5)) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(4))) and (not (abletomove==maxabletomove)) or (onplanet==5 and o2<maxo2) then
 		if onplanet==5 then
 			if firsttime==0 then
 				abletomove=maxabletomove
@@ -417,7 +417,7 @@ function turnpass()
 			--
 		end
 	end
-	if btnp(4) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btn(5))) then
+	if btnp(4) and not ((btn(0)) or (btn(1)) or (btn(2)) or (btn(3)) or (btnp(5))) then
 		if onplanet==8 then
 			if gold<maxgold then
 				if (abletomove>0) then
@@ -616,7 +616,7 @@ end
 --
 --
 function upgradestation()
-	if playerpos==5 and not (btn(5) or btn(0) or btn(1) or btn(2) or btn(3)) then
+	if playerpos==5 and not (btnp(5) or btn(0) or btn(1) or btn(2) or btn(3)) then
 		spr((letterzframe[letterzframetrg]),playerx-8,playery+8)
 
 		if introtriggerupgrade==1 then
@@ -630,34 +630,38 @@ end
 
 
 function upgradescreenmovement()
-	if btnp(up) then
+	if btnp(2) then
 		if upgradepos!=1 then
 			upgradepos-=1
 		end
+	end
+	if btnp(3) then
 		if upgradepos!=7 then
 			upgradepos+=1
 		end
+	end
 
 	if upgradepos==1 then
 		upgradeposy=20
 	elseif upgradepos==2 then
-		upgradeposy=40
+		upgradeposy=35
 	elseif upgradepos==3 then
-		upgradeposy=60
+		upgradeposy=50
 	elseif upgradepos==4 then
-		upgradeposy=80
+		upgradeposy=65
 	elseif upgradepos==5 then
-		upgradeposy=100
+		upgradeposy=80
 	elseif upgradepos==6 then
-		upgradeposy=120 	
+		upgradeposy=95 	
 	elseif upgradepos==7 then
-		upgradeposy=140 			--have to change these
+		upgradeposy=110		--have to change these
 	end
 end
 
 function upgradescreen()
 	if onupgradescreen==1 then
 	cls()
+	hud()
 	upgradescreenmovement()
 	--print (coolasstimer)
 		--create upgradepos
@@ -668,14 +672,11 @@ function upgradescreen()
 		--5 sell gold
 		--6 improve ratio
 		--7 buy warp and win
-	spr("flecha",upgradeposy,20)
+	spr(112,20,upgradeposy)
 		--hud
-
 			--have to do this
-
-
 		--triggers
-		if bntp(5) then
+		if btnp(5) then
 			if upgradepos==1 then
 				if maxo2==6 and money>=5 then
 					maxo2=12
@@ -716,11 +717,12 @@ function upgradescreen()
 				end
 			end
 			if upgradepos==4 then
-				money=iron*pricemult
+				money+=iron*pricemult
 				iron=0
 			end
 			if upgradepos==5 then
-				money=gold*pricemult
+				money+=gold*pricemult*2
+				gold=0
 			end
 			if upgradepos==6 then
 				if pricemult==1 and money>=50 then
@@ -748,6 +750,7 @@ function upgradescreen()
 	if coolasstimer!=0 then
 		if btnp(4) then
 		onupgradescreen=0
+		upgradepos=1
 		end
 	end
 end
@@ -868,6 +871,12 @@ __gfx__
 4555580806c6c80800bbb80800bb080800bb550000b5550000bbbb000055550000bb550000bbbb00000000000000000000000000000000000000000000000000
 4555540006c6c600bbbb000000b0b080bbbb0000bbbb0000bbbb0000bb550000bbbb0000bbbb0000000000000000000000000000000000000000000000000000
 4444440006666600bb0000000bbb0808bb000000bb000000bb000000bb000000bb000000bb000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00777000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00770000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 __label__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
