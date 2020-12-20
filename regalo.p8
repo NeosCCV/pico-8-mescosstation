@@ -474,6 +474,7 @@ function playermovement()
 						abletomove-=1
 						firsttime=0
 						turnstaken+=1
+						sfx(0)
 					end
 				end
 			end
@@ -486,6 +487,7 @@ function playermovement()
 						abletomove-=1
 						firsttime=0
 						turnstaken+=1
+						sfx(0)
 					end
 				end
 			end
@@ -498,6 +500,7 @@ function playermovement()
 						abletomove-=1
 						firsttime=0
 						turnstaken+=1
+						sfx(0)
 					end
 				end
 			end
@@ -510,6 +513,7 @@ function playermovement()
 						abletomove-=1
 						firsttime=0
 						turnstaken+=1
+						sfx(0)
 					end
 				end
 			end
@@ -539,7 +543,7 @@ function turnpass()
 					o2animgettrigger=1
 					o2=maxo2
 					turnstaken+=1
-
+					sfx(2)
 				end
 			end
 		end
@@ -551,6 +555,7 @@ function turnpass()
 			o2-=2
 			turnstaken+=1
 			o2animlosetrigger=1
+			sfx(5)
 			--
 		end
 		if onplanet==3 then
@@ -561,6 +566,7 @@ function turnpass()
 				o2animgettrigger=1
 				o2+=1
 				turnstaken+=1
+				sfx(2)
 			end
 
 		end
@@ -572,6 +578,7 @@ function turnpass()
 			o2-=1
 			turnstaken+=1
 			o2animlosetrigger=1
+			sfx(4)
 			--
 		end
 	end
@@ -585,6 +592,7 @@ function turnpass()
 					abletomove-=1
 					o2-=1
 					turnstaken+=1
+					sfx(1)
 				end
 				--
 			else
@@ -599,6 +607,7 @@ function turnpass()
 					abletomove-=1
 					o2-=1
 					turnstaken+=1
+					sfx(3)
 				end
 				--
 			else
@@ -774,13 +783,16 @@ end
 --
 --
 function upgradestation()
-	if playerpos==5 and not (btnp(5) or btn(0) or btn(1) or btn(2) or btn(3)) then
+	if playerpos==5 and not (btnp(5) or btn(0) or btn(1) or btn(2) or btn(3)) and not (deadof!=0) then
 		spr((letterzframe[letterzframetrg]),playerx-8,playery+8)
 
 		if introtriggerupgrade==1 then
 			if (btnp(4) and onupgradescreen==0) then
 				coolasstimer=0
 				onupgradescreen=1
+				sfx(11)
+				music(-1,300)
+				music(2)
 			end
 		end
 	end
@@ -821,6 +833,8 @@ function upgradescreen()
 	cls()
 	hud()
 	upgradescreenmovement()
+	spr((letterzframe[letterzframetrg]),0,0)
+	spr((arrowlframe[arrowlframetrg]),8,0)
 	--print (coolasstimer)
 		--create upgradepos
 		--1 max o2
@@ -829,7 +843,7 @@ function upgradescreen()
 		--4 sell iron
 		--5 sell gold
 		--6 improve ratio
-		--7 buy warp and win
+		--7 buy warp and wixn
 	spr(86,20,upgradeposy)
 		--max o2
 			if maxo2==6 then
@@ -976,14 +990,17 @@ function upgradescreen()
 					maxo2=12
 					money-=5
 					o2=maxo2
+					sfx(6)
 				elseif maxo2==12 and money>=50 then
 					maxo2=18
 					money-=50
 					o2=maxo2
+					sfx(7)
 				elseif maxo2==18 and money>=100 then
 					maxo2=25
 					money-=100
 					o2=maxo2
+					sfx(8)
 				end
 			end
 			if upgradepos==2 then
@@ -991,14 +1008,17 @@ function upgradescreen()
 					maxiron=10
 					maxgold=10
 					money-=5
+					sfx(6)
 				elseif maxiron==10 and money>=50 then
 					maxiron=15
 					maxgold=15
 					money-=50
+					sfx(7)
 				elseif maxiron==15 and money>=100 then
 					maxiron=20
 					maxgold=20
 					money-=100
+					sfx(8)
 				end
 			end
 			if upgradepos==3 then
@@ -1006,36 +1026,44 @@ function upgradescreen()
 					maxabletomove=2
 					money-=5
 					abletomove=maxabletomove
+					sfx(6)
 				elseif maxabletomove==2 and money>=50 then
 					maxabletomove=3
 					money-=50
 					abletomove=maxabletomove
+					sfx(7)
 				elseif maxabletomove==3 and money>=100 then
 					maxabletomove=4
 					money-=100
 					abletomove=maxabletomove
+					sfx(8)
 				end
 			end
 			if upgradepos==4 then
 				money+=iron*pricemult
 				allmymoneycounter+=iron*pricemult
 				iron=0
+				sfx(9)
 			end
 			if upgradepos==5 then
 				money+=gold*pricemult*2
 				allmymoneycounter+=gold*pricemult*2
 				gold=0
+				sfx(10)
 			end
 			if upgradepos==6 then
 				if pricemult==1 and money>=50 then
 					pricemult=2
 					money-=50
+					sfx(6)
 				elseif pricemult==2 and money>=100 then
 					pricemult=3
 					money-=100
+					sfx(7)
 				elseif pricemult==3 and money>=500 then
 					pricemult=4
 					money-=500
+					sfx(8)
 				end
 			end
 			if upgradepos==7 then
@@ -1043,6 +1071,7 @@ function upgradescreen()
 					deadof=2
 					--game_end()
 					money-=1000
+					music(-1)
 				end
 			end
 
@@ -1054,6 +1083,11 @@ function upgradescreen()
 		if btnp(4) then
 		onupgradescreen=0
 		upgradepos=1
+		if onplanet==5 and deadof==0 then
+		sfx(11)
+		music(-1,300)
+		music(0)
+		end
 		end
 	end
 end
@@ -1137,6 +1171,8 @@ end
 
 function gameend()
 	cls()
+	abletomove=0
+
 	if deadof==1 then --o2 depletion
 		print("You LOST!",50,10,7)
 		loseanim()
@@ -1368,3 +1404,26 @@ __label__
 
 __map__
 0000000000000000000000000600060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+__sfx__
+00010000040500405004050050500605007050080400b0300e030120101a010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00010000021500115004130071300a1100a11009130041300412005140051300212004110051000f550085600d550215401d5302052023540285402f5502f5503354033530335203553038520345100450000500
+0001000002750067500b750117500a7500d7500f750107500f75009750027500000000000000000175005750087500a750087500d7501175018750187500f7500875005750047500375004750000000000000000
+00010000021500115004130071300a1100a11009130041300412005140051300212004110051000f550115601255012540115301252012540135401455015550175401953019520125300b520125100450000500
+00010000127000e7100b7100871006720057200472003730027500175001750017500075000750007500000000000000000000000000000000000000000000000000022000000000000000000000000000000000
+00010000127601875014750127400f7400c7400a74008730077500575004750037500175000750007500000000000000000000000000000000000000000000000000022000000000000000000000000000000000
+000c00001055024530165502e53000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000c00001055024530165502e5301d550325500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000c00001055024530165502e5301d5503255026550395502f5503d5503f5503d5503d55000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000c000014520165201b520195201a520205201f0002600029000265001b50019500195001c500235001d500225002a5000000000000000000000000000000000000000000000000000000000000000000000000
+000c000014530165301b530195301a530225301f0002600029000265001b50019500195001c500235001d500225002a5000000000000000000000000000000000000000000000000000000000000000000000000
+0006000005050080500d000130001c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0110000010410000000d4100d4131041000000104100000000000000000c4100c4121041000000104101041510410000000d4100d4131041000000104100000000000000000c4100c41210410000001041010415
+011000001c4100000019410194131c410000001c41000000000000000018410184121c410000001c4101c4151c4100000019410194131c410000001c41000000000000000018410184121c410000001c4101c415
+011000000e7100f715000001c7141c7101c71500000000000e7100f715000001c7141c7101c71500000000000e7100f715000001c7141c7101c71500000000000e7100f715000001c7141c7101c7150000000000
+011000001b71028715287151c7141c7101c71500000000001b71028715287151c7141c7101c71500000000001b71028715287151c7141c7101c71500000000001b71028715287151c7141c7101c7150000000000
+__music__
+01 0c4f4344
+02 0d4f4344
+01 0e424344
+02 0f424344
+
