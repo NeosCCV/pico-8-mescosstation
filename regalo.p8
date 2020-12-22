@@ -181,7 +181,7 @@ function _init()
 	iron=0
 	maxiron=5
 	---------------------------------------------------------------
-	money=0
+	money=10000
 	allmymoneycounter=money
 	---------------------------------------------------------------
 	--
@@ -1246,8 +1246,8 @@ function winanim()
 	end
 		spr(130,62,45)
 		spr(87,62,44)
-		print(wintimeruwu,0,0,7)
-	if wintimeruwu>=60 then
+	--	print(wintimeruwu,0,0,7)
+	if wintimeruwu>60 then
 		wintimeruwu=0
 	else
 		wintimeruwu+=1
@@ -1257,6 +1257,134 @@ function winanim()
 		spr(131,58,40)
 	else
 		spr(132,56,38)
+	end
+
+	if wintimeruwu==2 or wintimeruwu==24 then		--1
+		spr(74,28,100)
+	elseif wintimeruwu==3 or wintimeruwu==25 then
+		spr(74,28,97)
+	elseif wintimeruwu==4 or wintimeruwu==26 then
+		spr(74,28,96)
+	elseif wintimeruwu==5  or wintimeruwu==6 or wintimeruwu==27 or wintimeruwu==28 then
+		spr(74,28,95)
+	elseif wintimeruwu==7 or wintimeruwu==29 then
+		spr(74,28,96)
+	elseif wintimeruwu==8 or wintimeruwu==30 then
+		spr(74,28,97)
+	else
+		spr(74,28,100)
+	end
+
+	if wintimeruwu==5 or wintimeruwu==39 then		--2
+		spr(75,38,100)
+	elseif wintimeruwu==6 or wintimeruwu==40 then
+		spr(75,38,98)
+	elseif wintimeruwu==7 or wintimeruwu==41 then
+		spr(75,38,97)
+	elseif wintimeruwu==8 or wintimeruwu==9  or wintimeruwu==42  or wintimeruwu==43 then
+		spr(75,38,96)
+	elseif wintimeruwu==10 or wintimeruwu==44 then
+		spr(75,38,97)
+	elseif wintimeruwu==11 or wintimeruwu==45 then
+		spr(75,38,98)
+	else
+		spr(75,38,100)
+	end
+
+	if wintimeruwu==35 or wintimeruwu==43 then		--3
+		spr(90,48,100)
+	elseif wintimeruwu==36 or wintimeruwu==44 then
+		spr(90,48,98)
+	elseif wintimeruwu==37 or wintimeruwu==45 then
+		spr(90,48,97)
+	elseif wintimeruwu==38 or wintimeruwu==39  or wintimeruwu==46  or wintimeruwu==47 then
+		spr(90,48,96)
+	elseif wintimeruwu==40 or wintimeruwu==48 then
+		spr(90,48,97)
+	elseif wintimeruwu==41 or wintimeruwu==49 then
+		spr(90,48,98)
+	else
+		spr(90,48,100)
+	end
+
+	if wintimeruwu==54 then							--4
+		spr(91,58,100)
+	elseif wintimeruwu==55 then
+		spr(91,58,97)
+	elseif wintimeruwu==56 then
+		spr(91,58,95)
+	elseif wintimeruwu==57 or wintimeruwu==58 then
+		spr(91,58,94)
+	elseif wintimeruwu==59 then
+		spr(91,58,95)
+	elseif wintimeruwu==60 then
+		spr(91,58,97)
+	else
+		spr(91,58,100)
+	end
+
+	if wintimeruwu==45 then							--5
+		spr(106,68,100)
+	elseif wintimeruwu==46 then
+		spr(106,68,98)
+	elseif wintimeruwu==47 then
+		spr(106,68,97)
+	elseif wintimeruwu==48  or wintimeruwu==49 then
+		spr(106,68,96)
+	elseif wintimeruwu==50 then
+		spr(106,68,97)
+	elseif wintimeruwu==51 then
+		spr(106,68,98)
+	else
+		spr(106,68,100)
+	end
+
+	if wintimeruwu==13 or wintimeruwu==38 then		--6
+		spr(107,78,100)
+	elseif wintimeruwu==14 or wintimeruwu==39 then
+		spr(107,78,98)
+	elseif wintimeruwu==15 or wintimeruwu==40 then
+		spr(107,78,97)
+	elseif wintimeruwu==16 or wintimeruwu==17  or wintimeruwu==41  or wintimeruwu==42 then
+		spr(107,78,96)
+	elseif wintimeruwu==18 or wintimeruwu==43 then
+		spr(107,78,97)
+	elseif wintimeruwu==19 or wintimeruwu==44 then
+		spr(107,78,98)
+	else
+		spr(107,78,100)
+	end
+
+	if wintimeruwu==49 or wintimeruwu==4 or wintimeruwu==22 then							--7
+		spr(122,88,100)
+	elseif wintimeruwu==50 or wintimeruwu==5 or wintimeruwu==23 then
+		spr(122,88,96)
+	elseif wintimeruwu==51 or wintimeruwu==6 or wintimeruwu==24 then
+		spr(122,88,94)
+	elseif wintimeruwu==52 or wintimeruwu==53 or wintimeruwu==7 or wintimeruwu==8 or wintimeruwu==25 or wintimeruwu==26 then
+		spr(122,88,93)
+	elseif wintimeruwu==54 or wintimeruwu==9 or wintimeruwu==27 then
+		spr(122,88,94)
+	elseif wintimeruwu==55 or wintimeruwu==10 or wintimeruwu==28 then
+		spr(122,88,96)
+	else
+		spr(122,88,100)
+	end
+
+	if wintimeruwu==28 or wintimeruwu==45 then		--8
+		spr(123,98,100)
+	elseif wintimeruwu==29 or wintimeruwu==46 then
+		spr(123,98,98)
+	elseif wintimeruwu==30 or wintimeruwu==47 then
+		spr(123,98,97)
+	elseif wintimeruwu==31 or wintimeruwu==32  or wintimeruwu==48  or wintimeruwu==49 then
+		spr(123,98,96)
+	elseif wintimeruwu==33 or wintimeruwu==50 then
+		spr(123,98,97)
+	elseif wintimeruwu==34 or wintimeruwu==51 then
+		spr(123,98,98)
+	else
+		spr(123,98,100)
 	end
 end
 
